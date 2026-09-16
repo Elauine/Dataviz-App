@@ -1,9 +1,8 @@
 # Les dépendances à installer 
 
 streamlit
-fastapi
-uvicorn
-requests
 pandas
-scikit-learn
-joblib
+plotly
+openpyxl
+xlsxwriter
+kaleido
