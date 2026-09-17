@@ -2,8 +2,7 @@ import streamlit as st
 
 from utils import (
     charger_donnees,
-    creer_graphique,
-    exporter_excel
+    creer_graphique
 )
 
 # =====================================================
@@ -15,16 +14,19 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📊 Créateur de graphiques Excel")
+st.title("📊 Mon Créateur de Graphiques (MCG)")
 
-st.write("Chargez un fichier Excel et créez plusieurs graphiques.")
+st.write(
+    "Importez vos données, créez plusieurs graphiques personnalisés "
+    "et obtenez en quelques clics des visualisations prêtes à être partagées."
+)
 
 # =====================================================
 # Chargement du fichier
 # =====================================================
 
 fichier = st.file_uploader(
-    "Choisir un fichier Excel",
+    "Chargez votre fichier Excel",
     type=["xlsx"]
 )
 
@@ -36,7 +38,7 @@ if fichier is not None:
 
     df = charger_donnees(fichier)
 
-    st.subheader("Aperçu des données")
+    st.markdown("#### Aperçu des données chargées")
 
     st.dataframe(df.head())
 
@@ -47,7 +49,7 @@ if fichier is not None:
     # ===============================================
 
     nb_graphiques = st.number_input(
-        "Nombre de graphiques à créer",
+        "Indiquez le nombre de graphiques que vous voulez créer",
         min_value=1,
         max_value=20,
         value=1
@@ -68,6 +70,7 @@ if fichier is not None:
         type_graphique = st.selectbox(
             "Type de graphique",
             [
+                "",
                 "Camembert",
                 "Diagramme en bâtons",
                 "Histogramme",
@@ -76,10 +79,8 @@ if fichier is not None:
             key=f"type_{i}"
         )
 
-        titre = st.text_input(
-            "Titre du graphique",
-            key=f"titre_{i}"
-        )
+        if type_graphique == "":
+            continue
 
         # ===========================================
         # Cas diagramme linéaire
@@ -89,15 +90,23 @@ if fichier is not None:
 
             variable_x = st.selectbox(
                 "Variable X",
-                colonnes,
+                [""] + colonnes,
                 key=f"x_{i}"
             )
 
             variable_y = st.selectbox(
                 "Variable Y",
-                colonnes,
+                [""] + colonnes,
                 key=f"y_{i}"
             )
+
+            titre = st.text_input(
+                "Titre du graphique",
+                key=f"titre_{i}"
+            )
+
+            if variable_x == "" or variable_y == "":
+                continue
 
             fig = creer_graphique(
                 df=df,
@@ -115,9 +124,17 @@ if fichier is not None:
 
             variable_x = st.selectbox(
                 "Variable",
-                colonnes,
+                [""] + colonnes,
                 key=f"var_{i}"
             )
+
+            titre = st.text_input(
+                "Titre du graphique",
+                key=f"titre_{i}"
+            )
+
+            if variable_x == "":
+                continue
 
             fig = creer_graphique(
                 df=df,
@@ -127,7 +144,7 @@ if fichier is not None:
             )
 
         # ===========================================
-        # Affichage
+        # Affichage du graphique
         # ===========================================
 
         st.plotly_chart(
@@ -141,22 +158,3 @@ if fichier is not None:
                 fig
             )
         )
-
-    # ===============================================
-    # Génération du fichier Excel
-    # ===============================================
-
-    fichier_excel = exporter_excel(
-        liste_graphiques
-    )
-
-    # ===============================================
-    # Téléchargement
-    # ===============================================
-
-    st.download_button(
-        label="📥 Télécharger le fichier Excel",
-        data=fichier_excel,
-        file_name="graphiques.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
