@@ -1,5 +1,13 @@
-Application de visualisation de données
-L’utilisateur charge un fichier Excel.
-Ensuite détermine le nombre de visuels qu’il veut créer. Des sections seront créées selon le nombre de visuels définis.
-Pour chaque section, l’utilisateur sélectionne la ou les variables dans une liste déroulante et le type de graphique. Puis il écrit le titre qu’il veut donner à son graphique. Il répète l’action pour chaque section.
-Il clique sur télécharger pour télécharger un fichier Excel qui contient tous les graphiques créés.
+# 📊 Mon Créateur de Graphiques (MCG)
+Cette application permet de créer facilement plusieurs graphiques à partir d'un fichier de données Excel.
+
+### Mode d'emploi
+1. Chargez un fichier Excel contenant vos données.
+2. Indiquez le nombre de graphiques que vous souhaitez créer.
+3. Une section est automatiquement générée pour chaque graphique.
+4. Pour chaque section :
+- sélectionnez le type de graphique ;
+- choisissez la ou les variables à représenter ;
+- saisissez le titre du graphique.
+5. Répétez l'opération pour chaque graphique souhaité.
+6. Les graphiques sont générés automatiquement et peuvent être téléchargés individuellement à l'aide des options disponibles sur chaque visualisation.
